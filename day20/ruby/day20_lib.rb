@@ -121,9 +121,9 @@ def build_graph(map, portals)
     portal_map[portal.y][portal.x] = portal
   end
 
-  # Perform DFS from each portal
+  # Perform BFS from each portal
   portals.each do |start_portal|
-    #puts "Performing DFS from portal #{start_portal}"
+    #puts "Performing BFS from portal #{start_portal}"
     depth_map = Array.new(map.length){ Array.new(map[0].length, nil) }
     color_map = Array.new(map.length){ Array.new(map[0].length, :white) }
 
@@ -157,7 +157,7 @@ def build_graph(map, portals)
 
         color_map[current_pos.y][current_pos.x] = :black
 
-        #render_dfs_map(map, color_map, depth_map)
+        #render_bfs_map(map, color_map, depth_map)
       end
     end
   end
@@ -248,7 +248,7 @@ def find_length_to_exit(map)
   return calculate_shortest_path(portals)
 end
 
-def render_dfs_map(map_clone, color_map, depth_map)
+def render_bfs_map(map_clone, color_map, depth_map)
   #map_clone = Marshal.load(Marshal.dump(map))
 
   map_clone.each_with_index do |row, y|
