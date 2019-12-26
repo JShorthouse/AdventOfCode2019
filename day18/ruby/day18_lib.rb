@@ -258,18 +258,21 @@ def calculate_paths(maze, maze_objects)
             old_key_id = cur_key_id
             cur_key_id = next_key_id
             next_key_id += 1
-            #puts "Old key set: #{key_sets[old_key_id]}, current pos: #{maze[pos_y][pos_x]}"
-            key_sets[cur_key_id] = key_sets[old_key_id] + [ maze[pos_y][pos_x].downcase ]
-            #puts "Key set after adding is:"
-            #p key_sets
+            key_sets[cur_key_id] = (key_sets[old_key_id] + [ maze[pos_y][pos_x].downcase ]).uniq
           end
-          key_map[pos_y][pos_x] = cur_key_id
 
           if maze[pos_y][pos_x] =~ /[a-z]/ then
             # Create edge
             path = MazePath.new(maze[pos_y][pos_x], depth, key_sets[cur_key_id])
             start_obj.paths.push(path)
+
+            # Add this key as a requirement for this path
+            old_key_id = cur_key_id
+            cur_key_id = next_key_id
+            next_key_id += 1
+            key_sets[cur_key_id] = (key_sets[old_key_id] + [ maze[pos_y][pos_x].downcase ]).uniq
           end
+          key_map[pos_y][pos_x] = cur_key_id
 
           obj_queue.enqueue(Position.new(pos_x, pos_y))
         end
